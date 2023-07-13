@@ -1,5 +1,5 @@
 from django.core.management import BaseCommand
-from main.models import Category, Product
+from main.models import Client, MailingSetting, Blog, Message, MailingLogs
 from users.models import User
 
 
