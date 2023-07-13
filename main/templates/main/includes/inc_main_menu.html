@@ -3,9 +3,14 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'main:index' %}">Главная</a>
           </li>
-       {% if perms.main.view_product %}
+       {% if perms.main.view_client %}
             <li class="nav-item">
             <a class="nav-link" href="{% url 'main:client_list' %}">Клиенты</a>
+          </li>
+       {% endif %}
+             {% if perms.main.view_client %}
+            <li class="nav-item">
+            <a class="nav-link" href="{% url 'main:MailingSetting_list' %}">Рассылки</a>
           </li>
        {% endif %}
             <li class="nav-item">

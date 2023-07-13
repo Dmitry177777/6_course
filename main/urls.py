@@ -15,6 +15,16 @@ app_name = MainConfig.name
 
 urlpatterns = [
     path('', index.as_view(), name="index"),
+
+    path('MailingSetting/', MailingSettingListView.as_view(), name='MailingSetting_list'),
+    path('MailingSetting_item/<int:pk>/', cache_page(60)(MailingSettingDetailView.as_view()), name='MailingSetting_item'),
+    path('MailingSetting/create/', MailingSettingCreateView.as_view(), name='MailingSetting_create'),
+    path('MailingSetting/update/<int:pk>/', MailingSettingUpdateView.as_view(), name='MailingSetting_update'),
+    path('MailingSetting/delete/<int:pk>/', MailingSettingDeleteView.as_view(), name='MailingSetting_delete'),
+
+
+
+
     path('clients/', ClientListView.as_view(), name='client_list'),
     path('client_item/<int:pk>/', cache_page(60)(ClientDetailView.as_view()), name='client_item'),
     path('clients/create/', ClientCreateView.as_view(), name='client_create'),

@@ -49,3 +49,27 @@ class MessageForm(FormStyleMixin, forms.ModelForm):
         model = Message
         fields = '__all__'
 
+
+class MailingSettingForm(FormStyleMixin, forms.ModelForm):
+
+    class Meta:
+        model = MailingSetting
+        fields = '__all__'
+
+
+
+    def clean_product_name (self):
+        cleaned_data = self.cleaned_data['email']
+        for i in exclusion_list:
+            if i.lower() in cleaned_data.lower():
+                raise forms.ValidationError('Недопустимые слова в наименовании: казино, криптовалюта, крипта, биржа, дешево, бесплатно, обман, полиция, радар')
+
+        return cleaned_data
+
+    def clean_description(self):
+        cleaned_data = self.cleaned_data['start_time']
+        for i in exclusion_list:
+            if i.lower() in cleaned_data.lower():
+                raise forms.ValidationError('Недопустимые слова в описании: казино, криптовалюта, крипта, биржа, дешево, бесплатно, обман, полиция, радар')
+
+        return cleaned_data
