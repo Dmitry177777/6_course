@@ -13,9 +13,9 @@
 
     <h2 class="fw-normal">{{object.email|title}}</h2>
     <p>{{object.client|truncatechars:100|title }}</p>
-    <p><a class="btn btn-secondary" href="{% url 'main:product_item' object.pk %}">Посмотреть &raquo;</a></p>
-    <p><a class="btn btn-warning" href="{% url 'main:product_update' object.pk %}">Обновить &raquo;</a></p>
-    <p><a class="btn btn-danger" href="{% url 'main:product_delete' object.pk %}">Удалить &raquo;</a></p>
+    <p><a class="btn btn-secondary" href="{% url 'main:client_item' object.pk %}">Посмотреть &raquo;</a></p>
+    <p><a class="btn btn-warning" href="{% url 'main:client_update' object.pk %}">Обновить &raquo;</a></p>
+    <p><a class="btn btn-danger" href="{% url 'main:client_delete' object.pk %}">Удалить &raquo;</a></p>
 
 </div><!-- /.card-body -->
 

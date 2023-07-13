@@ -38,7 +38,7 @@ class Client(models.Model):
 
 
 class MailingSetting(models.Model):
-    email = models.OneToOneField(User, on_delete=models.CASCADE, null=False,  verbose_name='почта_пользователя')
+    email = models.OneToOneField(Client, on_delete=models.CASCADE, null=False,  verbose_name='почта_пользователя')
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     status_mailing = models.BooleanField(default=False, verbose_name='Статус рассылки') # завершена, создана, запущена
@@ -52,7 +52,7 @@ class MailingSetting(models.Model):
 
 
 class Message(models.Model):
-    email = models.OneToOneField(User, on_delete=models.CASCADE, null=False, verbose_name='почта_пользователя')
+    email = models.OneToOneField(Client, on_delete=models.CASCADE, null=False, verbose_name='почта_пользователя')
     head_message = models.CharField(max_length=150, verbose_name='Тема сообщения')
     body_message = models.TextField(max_length=1000, verbose_name='Текст сообщения', **NULLABLE)
 
@@ -67,7 +67,7 @@ class Message(models.Model):
 
 
 class MailingLogs(models.Model):
-    email = models.OneToOneField(User, on_delete=models.CASCADE, null=False, verbose_name='почта_пользователя')
+    email = models.OneToOneField(Client, on_delete=models.CASCADE, null=False, verbose_name='почта_пользователя')
     log_time = models.DateTimeField() # дата и время последней попытки
     status_mailing = models.BooleanField(default=False, verbose_name='Статус попытки')  # завершена, создана, запущена
     get_server_mail = models.CharField(max_length=150, verbose_name='Ответ сервера', **NULLABLE)

@@ -37,18 +37,15 @@ class ClientForm(FormStyleMixin, forms.ModelForm):
         return cleaned_data
 #
 #
-#
-# class VersionForm(FormStyleMixin, forms.ModelForm):
-#
-#     # def __int__(self, *args, **kwargs):
-#     #     super().__init__(*args, **kwargs)
-#     #
-#     #     for field_name, field in self.fields.items():
-#     #         field.widget.attrs['class'] = 'form-control'
-#
-#
-#
-#     class Meta:
-#         model = Version
-#         fields = '__all__'
+
+class MessageForm(FormStyleMixin, forms.ModelForm):
+    def __int__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+
+    class Meta:
+        model = Message
+        fields = '__all__'
 

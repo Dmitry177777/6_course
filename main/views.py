@@ -9,7 +9,7 @@ from django.urls import reverse_lazy, reverse
 from django.utils.text import slugify
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from main.forms import ClientForm
+from main.forms import ClientForm, MessageForm
 # from main.forms import forms
 from main.models import Client, MailingSetting, Blog, Message, MailingLogs
 from main.services import get_category_product
@@ -48,7 +48,7 @@ class ClientDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        context_data['title'] = context_data['object'].product_name
+        context_data['title'] = context_data['object'].email
 
         return context_data
 
@@ -96,11 +96,11 @@ class ClientUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         else:
             if self.request.user.is_superuser or self.object.is_user_email == self.request.user.email: # проверка пользователя на автора или суперюзера
                 context_data = super().get_context_data(**kwargs)
-                VersionFormset = inlineformset_factory(Product, Version, form=VersionForm, extra=1)
+                MessageFormset = inlineformset_factory(Client, Message, form=MessageForm, extra=1)
                 if self.request.method == 'POST':
-                    context_data['formset'] = VersionFormset(self.request.POST, instance=self.object) # Обработка и сохранение POST запроса если он есть
+                    context_data['formset'] = MessageFormset(self.request.POST, instance=self.object) # Обработка и сохранение POST запроса если он есть
                 else:
-                    context_data['formset'] = VersionFormset(instance=self.object)
+                    context_data['formset'] = MessageFormset(instance=self.object)
                     # Обработка ошибки не авторизованных пользователей
 
             else:
