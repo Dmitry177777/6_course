@@ -15,6 +15,15 @@ app_name = MainConfig.name
 
 urlpatterns = [
     path('', index.as_view(), name="index"),
+    path('clients/', ClientListView.as_view(), name='client_list'),
+    path('client_item/<int:pk>/', cache_page(60)(ClientDetailView.as_view()), name='client_item'),
+    path('clients/create/', ClientCreateView.as_view(), name='client_create'),
+    path('clients/update/<int:pk>/', ClientUpdateView.as_view(), name='client_update'),
+    path('clients/delete/<int:pk>/', ClientDeleteView.as_view(), name='client_delete'),
+
+
+
+
 
     path('blog/', BlogListView.as_view(), name='blog_list'),
 

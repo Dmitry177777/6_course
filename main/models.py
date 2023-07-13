@@ -10,7 +10,7 @@ from pytils.translit import slugify
 # NULLABLE = {'blank':True, 'null': True}
 
 class Client(models.Model):
-    email = models.ForeignKey(User, on_delete=models.CASCADE, null=False, unique=True, verbose_name='почта_пользователя')
+    email = models.OneToOneField(User, on_delete=models.CASCADE, null=False, unique=True, verbose_name='почта_пользователя')
     client = models.CharField(max_length=150, verbose_name='ФИО')
     client_comment = models.CharField(max_length=350, verbose_name='Комментарий', **NULLABLE)
     is_active = models.BooleanField(default=True, verbose_name='Активный клиент')
@@ -38,7 +38,7 @@ class Client(models.Model):
 
 
 class MailingSetting(models.Model):
-    email = models.ForeignKey(User, on_delete=models.CASCADE, null=False,  verbose_name='почта_пользователя')
+    email = models.OneToOneField(User, on_delete=models.CASCADE, null=False,  verbose_name='почта_пользователя')
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     status_mailing = models.BooleanField(default=False, verbose_name='Статус рассылки') # завершена, создана, запущена
@@ -52,7 +52,7 @@ class MailingSetting(models.Model):
 
 
 class Message(models.Model):
-    email = models.ForeignKey(User, on_delete=models.CASCADE, null=False, verbose_name='почта_пользователя')
+    email = models.OneToOneField(User, on_delete=models.CASCADE, null=False, verbose_name='почта_пользователя')
     head_message = models.CharField(max_length=150, verbose_name='Тема сообщения')
     body_message = models.TextField(max_length=1000, verbose_name='Текст сообщения', **NULLABLE)
 
@@ -67,7 +67,7 @@ class Message(models.Model):
 
 
 class MailingLogs(models.Model):
-    email = models.ForeignKey(User, on_delete=models.CASCADE, null=False, verbose_name='почта_пользователя')
+    email = models.OneToOneField(User, on_delete=models.CASCADE, null=False, verbose_name='почта_пользователя')
     log_time = models.DateTimeField() # дата и время последней попытки
     status_mailing = models.BooleanField(default=False, verbose_name='Статус попытки')  # завершена, создана, запущена
     get_server_mail = models.CharField(max_length=150, verbose_name='Ответ сервера', **NULLABLE)
@@ -91,7 +91,7 @@ class Blog(models.Model):
     date_of_change = models.DateField(default=date.today, verbose_name='Дата последнего изменения')
     is_publication = models.BooleanField(default=True, verbose_name='Опубликовано')
     views_count = models.IntegerField(default=0,verbose_name='Количество просмотров')
-    email = models.ForeignKey(User, on_delete=models.CASCADE, null=False, verbose_name='почта_пользователя')
+    email = models.OneToOneField(User, on_delete=models.CASCADE, null=False, verbose_name='почта_пользователя')
 
 
 

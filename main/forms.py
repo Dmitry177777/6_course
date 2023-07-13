@@ -12,29 +12,29 @@ class FormStyleMixin:
             field.widget.attrs['class'] = 'form-control'
 
 
-# class ProductForm(FormStyleMixin, forms.ModelForm):
-#
-#     class Meta:
-#         model = Product
-#         fields = '__all__'
-#
-#
-#
-#     def clean_product_name (self):
-#         cleaned_data = self.cleaned_data['product_name']
-#         for i in exclusion_list:
-#             if i.lower() in cleaned_data.lower():
-#                 raise forms.ValidationError('Недопустимые слова в наименовании: казино, криптовалюта, крипта, биржа, дешево, бесплатно, обман, полиция, радар')
-#
-#         return cleaned_data
-#
-#     def clean_description(self):
-#         cleaned_data = self.cleaned_data['description']
-#         for i in exclusion_list:
-#             if i.lower() in cleaned_data.lower():
-#                 raise forms.ValidationError('Недопустимые слова в описании: казино, криптовалюта, крипта, биржа, дешево, бесплатно, обман, полиция, радар')
-#
-#         return cleaned_data
+class ClientForm(FormStyleMixin, forms.ModelForm):
+
+    class Meta:
+        model = Client
+        fields = '__all__'
+
+
+
+    def clean_product_name (self):
+        cleaned_data = self.cleaned_data['email']
+        for i in exclusion_list:
+            if i.lower() in cleaned_data.lower():
+                raise forms.ValidationError('Недопустимые слова в наименовании: казино, криптовалюта, крипта, биржа, дешево, бесплатно, обман, полиция, радар')
+
+        return cleaned_data
+
+    def clean_description(self):
+        cleaned_data = self.cleaned_data['client']
+        for i in exclusion_list:
+            if i.lower() in cleaned_data.lower():
+                raise forms.ValidationError('Недопустимые слова в описании: казино, криптовалюта, крипта, биржа, дешево, бесплатно, обман, полиция, радар')
+
+        return cleaned_data
 #
 #
 #

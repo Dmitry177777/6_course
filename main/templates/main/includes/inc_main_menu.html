@@ -5,15 +5,10 @@
           </li>
        {% if perms.main.view_product %}
             <li class="nav-item">
-            <a class="nav-link" href="{% url 'main:product_list' %}">Продукты</a>
+            <a class="nav-link" href="{% url 'main:client_list' %}">Клиенты</a>
           </li>
        {% endif %}
-       {% if perms.main.view_category %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'main:category_list' %}">Категории</a>
-          </li>
-       {% endif %}
-          <li class="nav-item">
+            <li class="nav-item">
             <a class="nav-link" href="{% url 'main:blog_list' %}">Блог</a>
           </li>
           {% if user.is_authenticated %}
