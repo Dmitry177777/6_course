@@ -9,8 +9,8 @@ from django.urls import reverse_lazy, reverse
 from django.utils.text import slugify
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from main.forms import ProductForm, VersionForm
-from main.models import Product, Category, Blog, Version
+# from main.forms import forms
+from main.models import Client, MailingSetting, Blog, Message, MailingLogs
 from main.services import get_category_product
 
 
@@ -18,7 +18,7 @@ from main.services import get_category_product
 
 
 class index(LoginRequiredMixin, ListView):
-    model = Product
+    model = Client
     extra_context = {
         'title': 'Первые продукты'
     }

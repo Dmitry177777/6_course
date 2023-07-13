@@ -28,7 +28,7 @@ class Client(models.Model):
     class Meta:
         verbose_name='Клиент сервиса'
         verbose_name_plural='Клиенеты сервиса'
-        ordering = ('user_email', )
+        ordering = ('email', )
         # permissions = [
         #     (
         #         "set_published_status",
@@ -47,7 +47,7 @@ class MailingSetting(models.Model):
         verbose_name_plural = 'Mailing List'
 
     def __str__(self):
-        return f'{self.email} : {self.head_message} : {self.status} '
+        return f'{self.email} : {self.start_time} : {self.end_time} '
 
 
 class Message(models.Model):
