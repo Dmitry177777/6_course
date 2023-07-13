@@ -44,7 +44,8 @@ class MailingSetting(models.Model):
     status_mailing = models.BooleanField(default=False, verbose_name='Статус рассылки') # завершена, создана, запущена
 
     class Meta:
-        verbose_name_plural = 'Mailing List'
+        verbose_name = 'Настройка рассылки'
+        verbose_name_plural = 'Настройки рассылки'
 
     def __str__(self):
         return f'{self.email} : {self.start_time} : {self.end_time} '
@@ -60,6 +61,10 @@ class Message(models.Model):
     def __str__(self):
         return f'{self.email} : {self.head_message} '
 
+    class Meta:
+        verbose_name = 'Сообщение'
+        verbose_name_plural = 'Сообщения'
+
 
 class MailingLogs(models.Model):
     email = models.ForeignKey(User, on_delete=models.CASCADE, null=False, verbose_name='почта_пользователя')
@@ -68,7 +73,8 @@ class MailingLogs(models.Model):
     get_server_mail = models.CharField(max_length=150, verbose_name='Ответ сервера', **NULLABLE)
 
     class Meta:
-        verbose_name_plural = 'Mailing Logs'
+        verbose_name = 'Лог рассылки'
+        verbose_name_plural = 'Логи рассылки'
 
     def __str__(self):
         return f'{self.log_time} : {self.status_mailing} '
