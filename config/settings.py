@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',
 
     'main',
     'users',
@@ -173,3 +174,9 @@ CACHES = {
         "LOCATION": "redis://127.0.0.1:6379",
         }
     }
+
+
+# Функция синхронизации выполняется каждую минуту
+CRONJOBS = [
+    ('*****', 'main.Cronjob_script.task1'),
+]
