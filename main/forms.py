@@ -73,3 +73,17 @@ class MailingSettingForm(FormStyleMixin, forms.ModelForm):
                 raise forms.ValidationError('Недопустимые слова в описании: казино, криптовалюта, крипта, биржа, дешево, бесплатно, обман, полиция, радар')
 
         return cleaned_data
+
+
+
+class MailingLogsForm(FormStyleMixin, forms.ModelForm):
+    def __int__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+
+    class Meta:
+        model = MailingLogs
+        fields = '__all__'
+

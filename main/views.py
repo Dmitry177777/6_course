@@ -9,7 +9,7 @@ from django.urls import reverse_lazy, reverse
 from django.utils.text import slugify
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from main.forms import ClientForm, MessageForm, MailingSettingForm
+from main.forms import ClientForm, MessageForm, MailingSettingForm, MailingLogsForm
 # from main.forms import forms
 from main.models import Client, MailingSetting, Blog, Message, MailingLogs
 from main.services import get_category_product
@@ -57,7 +57,7 @@ class MailingSettingCreateView(LoginRequiredMixin, PermissionRequiredMixin, Crea
     model = MailingSetting
     template_name = 'main\MailingSetting_form_with_formset.html'
     permission_required = "main.add_MailingSetting"
-    # fields = ('product_category', 'product_name', 'description', 'product_price',)
+
     form_class = MailingSettingForm
     success_url = reverse_lazy('main:client_list')
 
@@ -73,7 +73,7 @@ class MailingSettingCreateView(LoginRequiredMixin, PermissionRequiredMixin, Crea
 
     def form_valid(self, form):
 
-        form.instance.is_user_email = self.request.user.email  # запись авторизованного пользователя в шаблон
+        form.instance.email = self.request.user.email  # запись авторизованного пользователя в шаблон
         form.save()
         return super().form_valid(form)
 
@@ -84,23 +84,22 @@ class MailingSettingUpdateView(LoginRequiredMixin, PermissionRequiredMixin, Upda
     template_name = 'main\MailingSetting_form_with_formset.html'
     permission_required = "main.change_MailingSetting"
     # fields = ('product_category', 'product_name', 'description', 'product_price',)
-    form_class = ClientForm
+    form_class = MailingSettingForm
     success_url = reverse_lazy('main:MailingSetting_list')
 
-
-
-    def get_context_data(self,  **kwargs):
+    def get_context_data(self, **kwargs):
         if not self.request.user.is_authenticated:
             # Обработка ошибки не авторизованных пользователей
             raise BaseException("Вы не авторизованы. Изменять продукты может только авторизованный пользователь.")
         else:
-            if self.request.user.is_superuser or self.object.is_user_email == self.request.user.email: # проверка пользователя на автора или суперюзера
+            if self.request.user.is_superuser or self.object.email == self.request.user.email:  # проверка пользователя на автора или суперюзера
                 context_data = super().get_context_data(**kwargs)
-                MessageFormset = inlineformset_factory(Client, Message, form=MessageForm, extra=1)
+                MailingLogsFormset = inlineformset_factory(MailingSetting, MailingLogs, form=MailingSettingForm, extra=1)
                 if self.request.method == 'POST':
-                    context_data['formset'] = MessageFormset(self.request.POST, instance=self.object) # Обработка и сохранение POST запроса если он есть
+                    context_data['formset'] = MailingLogsFormset(self.request.POST,
+                                                             instance=self.object)  # Обработка и сохранение POST запроса если он есть
                 else:
-                    context_data['formset'] = MessageFormset(instance=self.object)
+                    context_data['formset'] = MailingLogsFormset(instance=self.object)
                     # Обработка ошибки не авторизованных пользователей
 
             else:
@@ -111,14 +110,13 @@ class MailingSettingUpdateView(LoginRequiredMixin, PermissionRequiredMixin, Upda
         context_data = self.get_context_data()
         formset = context_data['formset']
 
-        self.object =form.save()
+        self.object = form.save()
         if formset.is_valid():
             formset.instance = self.object
             formset.save()
-        form.instance.is_user_email = self.request.user.email  # запись авторизованного пользователя в шаблон
+        form.instance.email = self.request.user.email  # запись авторизованного пользователя в шаблон
         form.save()
         return super().form_valid(form)
-
 
 
 class MailingSettingDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
@@ -193,9 +191,9 @@ class ClientUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             # Обработка ошибки не авторизованных пользователей
             raise BaseException("Вы не авторизованы. Изменять продукты может только авторизованный пользователь.")
         else:
-            if self.request.user.is_superuser or self.object.is_user_email == self.request.user.email: # проверка пользователя на автора или суперюзера
+            if self.request.user.is_superuser or self.object.email == self.request.user.email: # проверка пользователя на автора или суперюзера
                 context_data = super().get_context_data(**kwargs)
-                MessageFormset = inlineformset_factory(Client, Message, form=MessageForm, extra=1)
+                MessageFormset = inlineformset_factory(Client, MailingSetting, form=MessageForm, extra=1)
                 if self.request.method == 'POST':
                     context_data['formset'] = MessageFormset(self.request.POST, instance=self.object) # Обработка и сохранение POST запроса если он есть
                 else:
@@ -214,7 +212,7 @@ class ClientUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         if formset.is_valid():
             formset.instance = self.object
             formset.save()
-        form.instance.is_user_email = self.request.user.email  # запись авторизованного пользователя в шаблон
+        form.instance.email = self.request.user.email  # запись авторизованного пользователя в шаблон
         form.save()
         return super().form_valid(form)
 

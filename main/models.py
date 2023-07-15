@@ -36,24 +36,9 @@ class Client(models.Model):
         #     )
         # ]
 
-
-class MailingSetting(models.Model):
-    email = models.OneToOneField(Client, on_delete=models.CASCADE, null=False,  verbose_name='почта_пользователя')
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-    status_mailing = models.BooleanField(default=False, verbose_name='Статус рассылки') # завершена, создана, запущена
-
-    class Meta:
-        verbose_name = 'Настройка рассылки'
-        verbose_name_plural = 'Настройки рассылки'
-
-    def __str__(self):
-        return f'{self.email} : {self.start_time} : {self.end_time} '
-
-
 class Message(models.Model):
+    head_message = models.CharField(max_length=150, unique=True, default='сообщение', verbose_name='Тема сообщения')
     email = models.OneToOneField(Client, on_delete=models.CASCADE, null=False, verbose_name='почта_пользователя')
-    head_message = models.CharField(max_length=150, verbose_name='Тема сообщения')
     body_message = models.TextField(max_length=1000, verbose_name='Текст сообщения', **NULLABLE)
 
 
@@ -65,9 +50,10 @@ class Message(models.Model):
         verbose_name = 'Сообщение'
         verbose_name_plural = 'Сообщения'
 
-
 class MailingLogs(models.Model):
     email = models.OneToOneField(Client, on_delete=models.CASCADE, null=False, verbose_name='почта_пользователя')
+    head_message = models.OneToOneField(Message, on_delete=models.CASCADE, max_length=150, default='сообщение',
+                                        verbose_name='Тема сообщения')
     log_time = models.DateTimeField() # дата и время последней попытки
     status_mailing = models.BooleanField(default=False, verbose_name='Статус попытки')  # завершена, создана, запущена
     get_server_mail = models.CharField(max_length=150, verbose_name='Ответ сервера', **NULLABLE)
@@ -77,7 +63,27 @@ class MailingLogs(models.Model):
         verbose_name_plural = 'Логи рассылки'
 
     def __str__(self):
-        return f'{self.log_time} : {self.status_mailing} '
+        return f'{self.log_time} : {self.status_mailing}'
+
+
+
+
+class MailingSetting(models.Model):
+    email = models.OneToOneField(Client, on_delete=models.CASCADE, null=False,  verbose_name='почта_пользователя')
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    status_mailing = models.BooleanField(default=False, verbose_name='Статус рассылки') # завершена, создана, запущена
+    head_message = models.OneToOneField(Message, on_delete=models.CASCADE, max_length=150,  default='сообщение', verbose_name='Тема сообщения')
+
+
+
+    class Meta:
+        verbose_name = 'Настройка рассылки'
+        verbose_name_plural = 'Настройки рассылки'
+
+    def __str__(self):
+        return f'{self.email} : {self.start_time} : {self.end_time} '
+
 
 
 
